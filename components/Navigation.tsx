@@ -1,9 +1,9 @@
-import { getSession } from "@/app/lib/actions/auth";
+import { getUserProfile } from "@/app/lib/actions/user";
 import Avatar from "@/app/ui/Avatar";
-import Link from "next/link";
+import Link from "next/link"; 
 
 export default async function Navigation() {
-  const user = await getSession();
+  const user = await getUserProfile();
 
   return (
     <nav className="flex justify-between items-center py-2 px-5 bg-zinc-100">

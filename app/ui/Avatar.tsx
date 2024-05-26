@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type VariantType = 'small' | 'medium' | 'large' | 'extra-large';
 
 interface Props {
@@ -28,7 +30,7 @@ export default function Avatar({imageUrl, variant, fallback}: Props) {
     >
       {imageUrl ? 
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={imageUrl} className="rounded-full" alt=""  />
+        <img src={imageUrl} className="rounded-full h-full w-full object-cover" alt=""  />
         : 
         <span className={`text-[16px] text-zinc-900 font-semibold`}>{fallback}</span>}
     </div>

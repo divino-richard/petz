@@ -3,12 +3,13 @@ import { getSession } from "../lib/actions/auth";
 import Avatar from "../ui/Avatar";
 import LogoutButton from "../../components/LogoutButton";
 import Separator from "../ui/Separator";
+import { getUserProfile } from "../lib/actions/user";
 
 export default async function Page() {
-  const user = await getSession();
+  const user = await getUserProfile();
 
   if(!user) return;
-
+  
   return (
     <main>
       <div className="w-2/3 m-auto mt-5">

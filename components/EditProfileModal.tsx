@@ -2,21 +2,31 @@
 
 import EditProfileButton from "@/components/EditProfileButton";
 import Modal from "@/app/ui/Modal";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { User } from "@prisma/client";
 import UploadAvatar from "./UploadAvatar";
 import Separator from "@/app/ui/Separator";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState, useFormStatus} from "react-dom";
 import { updateProfile } from "@/app/lib/actions/user";
 
 interface Props {
   user: User;
 }
+
+const initialState = {
+  errorMessage: '',
+  success: false
+}
 export default function EditProfileModal({user}:Props) {
   const [showEditModal, setShowEditModal] = useState(false);
-  const [errorMessage, dispatch] = useFormState(updateProfile, undefined);
-  const {pending} = useFormStatus();
-  const [avatarUrl, setAvatarUrl] = useState('');
+  const [state, dispatch] = useFormState(updateProfile, initialState);
+
+  useEffect(() => {
+    if(state.success) {
+      console.log(state.success)
+      setShowEditModal(false);
+    }
+  }, [state]);
 
   return (
     <div>
@@ -26,11 +36,14 @@ export default function EditProfileModal({user}:Props) {
         show={showEditModal}
         onClose={() => setShowEditModal(false)}
       >
+        {state?.message &&
+          <p className="text-red-500 text-[14px] text-center">
+            {state?.message}
+          </p>
+        }
         <form action={dispatch} className="py-5 space-y-5">
           <div className="flex gap-5">
-            <UploadAvatar 
-              onUploadSuccess={(imageUrl) => setAvatarUrl(imageUrl)}
-            />
+            <UploadAvatar />
           </div>
           <Separator />
           <div className="flex flex-col">
@@ -101,15 +114,22 @@ export default function EditProfileModal({user}:Props) {
             >
               Cancel
             </button>
-            <button 
-              type="submit"
-              className="w-fit flex items-center gap-2 text-[16px]  bg-zinc-800 text-white py-2 px-5 border border-zinc-800 mt-5 hover:bg-zinc-700"
-            >
-              {pending ? "Saving..." : "Save"}
-            </button>
+            <SaveProfileButton />
           </div>
         </form>
       </Modal>
     </div>
   )
+}
+
+function SaveProfileButton() {
+  const {pending} = useFormStatus();
+  return (
+    <button 
+      type="submit"
+      className="w-fit flex items-center gap-2 text-[16px]  bg-zinc-800 text-white py-2 px-5 border border-zinc-800 mt-5 hover:bg-zinc-700"
+    >
+      {pending ? "Saving..." : "Save"}
+    </button>
+  );
 }

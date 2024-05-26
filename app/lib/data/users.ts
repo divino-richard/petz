@@ -1,3 +1,5 @@
+'use server';
+
 import prisma from "@/prisma/db";
 
 export async function getUserByEmail(email: string) {
@@ -9,10 +11,10 @@ export async function getUserByEmail(email: string) {
 }
 
 interface IUpdateUser {
-  avatar: string;
+  avatar?: string;
   firstName: string;
   lastName: string;
-  userName: string;
+  username: string;
   bio: string;
 }
 export async function updateUser(userId: string, data: IUpdateUser) {
@@ -21,5 +23,13 @@ export async function updateUser(userId: string, data: IUpdateUser) {
       id: userId
     },
     data: data
+  })
+}
+
+export async function getUserById(userId: string) {
+  return await prisma.user.findUnique({
+    where: {
+      id: userId
+    }
   })
 }

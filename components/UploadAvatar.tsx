@@ -4,11 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import userPlaceholder from '@/public/user.png';
 
-interface Props {
-  onUploadSuccess: (imageUrl: string) => void;
-}
-
-export default function UploadAvatar({onUploadSuccess}: Props) {
+export default function UploadAvatar() {
   const selectImage = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState('');
 
