@@ -1,7 +1,7 @@
 'use client';
 
 import { signIn } from "@/app/lib/actions/auth";
-import LoginButton from "@/app/ui/LoginButton";
+import LoginButton from "@/components/LoginButton";
 import { useFormState } from "react-dom";
 
 export default function Page() {
