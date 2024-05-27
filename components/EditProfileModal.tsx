@@ -4,7 +4,7 @@ import EditProfileButton from "@/components/EditProfileButton";
 import Modal from "@/app/ui/Modal";
 import { useEffect, useState } from "react"
 import { User } from "@prisma/client";
-import UploadAvatar from "./UploadAvatar";
+import UploadImage from "./UploadImage";
 import Separator from "@/app/ui/Separator";
 import { useFormState, useFormStatus} from "react-dom";
 import { updateProfile } from "@/app/lib/actions/user";
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const initialState = {
-  errorMessage: '',
+  errorMessage: null,
   success: false
 }
 export default function EditProfileModal({user}:Props) {
@@ -23,7 +23,6 @@ export default function EditProfileModal({user}:Props) {
 
   useEffect(() => {
     if(state.success) {
-      console.log(state.success)
       setShowEditModal(false);
     }
   }, [state]);
@@ -43,7 +42,7 @@ export default function EditProfileModal({user}:Props) {
         }
         <form action={dispatch} className="py-5 space-y-5">
           <div className="flex gap-5">
-            <UploadAvatar />
+            <UploadImage />
           </div>
           <Separator />
           <div className="flex flex-col">

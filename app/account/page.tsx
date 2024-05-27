@@ -1,12 +1,14 @@
 import EditProfileModal from "@/components/EditProfileModal";
-import { getSession } from "../lib/actions/auth";
 import Avatar from "../ui/Avatar";
 import LogoutButton from "../../components/LogoutButton";
 import Separator from "../ui/Separator";
 import { getUserProfile } from "../lib/actions/user";
+import RegisterPetModal from "@/components/RegisterPetModal";
+import { getCategories } from "../lib/actions/pet";
 
 export default async function Page() {
   const user = await getUserProfile();
+  const categories = await getCategories();
 
   if(!user) return;
   
@@ -33,6 +35,11 @@ export default async function Page() {
           <LogoutButton className={'bg-zinc-600'}/>
         </div>
         <Separator />
+
+        <div className="flex items-center justify-between">
+          <h1 className="text-[16px] text-zinc-800 font-semibold">Your Pets</h1>
+          <RegisterPetModal categories={categories}/>
+        </div>
       </div>
     </main>
   );

@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import userPlaceholder from '@/public/user.png';
+import userPlaceholder from '@/public/image-placeholder.png';
 
-export default function UploadAvatar() {
+export default function UploadImage() {
   const selectImage = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState('');
 

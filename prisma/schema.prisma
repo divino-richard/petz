@@ -35,25 +35,18 @@ model Pet {
   age            Int
   color          String
   breed          String
-  weight         String
-  adoptationDate String
+  weight         Int
+  adoptationDate DateTime
+  avatar         String?
+  ability        String
   vaccinations   PetVaccination[]
-  category       PetCategory?
-  capabilities   PetCapability[]
+  category       PetCategory @relation(fields: [categoryId], references: [id])
+  categoryId     String
   posts          PetPost[]
-  owner          User             @relation(fields: [owerId], references: [id])
-  owerId         String
+  owner          User             @relation(fields: [ownerId], references: [id])
+  ownerId        String
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-}
-
-model PetCapability {
-  id        String   @id @default(cuid())
-  label     String
-  pet       Pet      @relation(fields: [petId], references: [id])
-  petId     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model PetVaccination {
@@ -70,8 +63,7 @@ model PetCategory {
   id          String   @id @default(cuid())
   name        String   @unique
   description String
-  pet         Pet      @relation(fields: [petId], references: [id])
-  petId       String   @unique
+  pet         Pet[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

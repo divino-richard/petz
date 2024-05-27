@@ -1,10 +1,10 @@
 "use server";
 
-import { put } from "@vercel/blob";
 import { getUserById, updateUser } from "../data/users";
 import { getSession } from "./auth";
 import { revalidatePath } from "next/cache";
 import { updateProfileSchema } from "../schema/user.schema";
+import { uploadPublicFile } from "@/utils/upload.utils";
 
 export async function updateProfile(_currentState: any, formData: FormData) {
   try {
@@ -15,20 +15,17 @@ export async function updateProfile(_currentState: any, formData: FormData) {
       username: formData.get('username') as string,
       bio: formData.get('bio') as string,
     });
+    let avatarUrl;
 
     const avatar = formData.get('avatar') as File | null;
-    let avatarUrl;
-    if(avatar && avatar instanceof File && avatar.size > 0 && avatar.name) {
-      const { url } = await put(avatar.name, avatar, { 
-        access: 'public', 
-        token: process.env.NEXT_PUBLIC_BLOB_READ_WRITE_TOKEN 
-      });
-      avatarUrl = url;
+    const uploadResult = await uploadPublicFile(avatar);
+    if(uploadResult) {
+      avatarUrl = uploadResult.url;
     }
 
     const update = await updateUser(user?.id ?? '', { 
       ...data,
-      avatar: avatarUrl ?? undefined
+      avatar: avatarUrl
     });
 
     if(!update) return {
@@ -40,7 +37,6 @@ export async function updateProfile(_currentState: any, formData: FormData) {
       success: true
     }
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
