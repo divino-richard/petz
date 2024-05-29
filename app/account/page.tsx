@@ -4,13 +4,15 @@ import LogoutButton from "../../components/LogoutButton";
 import Separator from "../ui/Separator";
 import { getUserProfile } from "../lib/actions/user";
 import RegisterPetModal from "@/components/RegisterPetModal";
-import { getCategories } from "../lib/actions/pet";
+import { getPets, getCategories } from "../lib/actions/pet";
+import Link from "next/link";
 
 export default async function Page() {
   const user = await getUserProfile();
-  const categories = await getCategories();
-
   if(!user) return;
+
+  const categories = await getCategories();
+  const pets = await getPets(user?.id);
   
   return (
     <main>
@@ -39,6 +41,42 @@ export default async function Page() {
         <div className="flex items-center justify-between">
           <h1 className="text-[16px] text-zinc-800 font-semibold">Your Pets</h1>
           <RegisterPetModal categories={categories}/>
+        </div>
+
+        <div className="py-5 space-y-5">
+          {pets.map(pet => (
+            <div 
+              key={pet.id}
+              className="border border-zinc-200 p-5 rounded-lg flex justify-between"
+            >
+              <div className="flex gap-5">
+                <Avatar 
+                  imageUrl={pet.avatar}
+                  fallback={pet.name[0]}
+                  variant="large"
+                />
+                <div>
+                  <h1 className="text-[18px] text-zinc-800 font-semibold">
+                    {pet.name}
+                  </h1>
+                  <p className="text-[16x] text-zinc-800">
+                    {pet.age + "years old"}
+                  </p>
+                  <p  className="text-[16px] text-zinc-800">
+                    {"Adoptation Date: " + new Date(pet.adoptationDate).toDateString()}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <Link
+                  href={`/pet/${pet.id}`} 
+                  className="w-fit flex items-center gap-2 text-[16px] bg-zinc-50 py-2 px-5 border border-zinc-100 hover:border-zinc-800"
+                >
+                  <span>View Profile</span>
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </main>

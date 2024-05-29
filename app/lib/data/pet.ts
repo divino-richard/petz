@@ -24,3 +24,37 @@ export async function createPet(data: ICreatePet) {
     data
   });
 }
+
+export async function getPetsByOwnerId(id: string) {
+  return await prisma.pet.findMany({
+    where: {
+      ownerId: id
+    },
+    include: {
+      category: true,
+      _count: true
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  })
+}
+
+export async function getPetById(id: string) {
+  try {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        category: true,
+        posts: true,
+        owner: true,
+        vaccinations: true,
+      }
+    });
+    return pet;
+  } catch (error) {
+    throw error;
+  }
+}

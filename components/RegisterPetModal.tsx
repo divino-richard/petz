@@ -34,7 +34,8 @@ export default function RegisterPetModal({categories}:Props) {
     <div>
       <button 
         className="bg-zinc-800 text-white text-[16px] py-2 px-5 hover:bg-zinc-700"
-        onClick={() => setShowModal(true)}>
+        onClick={() => setShowModal(true)}
+      >
         Register Pet
       </button>
       <Modal
