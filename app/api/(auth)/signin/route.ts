@@ -1,5 +1,5 @@
-import { encrypt } from "@/app/lib/actions/auth";
-import { getUserByEmail } from "@/app/lib/data/users";
+import { getUserByEmail } from "@/lib/data/users";
+import { encrypt } from "@/utils/auth.utils";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   }
 
   const expires = 60 * 60 * 24 * 7;
-  const token = await encrypt(user, expires);
+  const token = encrypt(user, expires);
 
   return Response.json({ 
     user: user,

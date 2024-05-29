@@ -1,20 +1,11 @@
 "use server";
 
 import { ZodError } from "zod";
-import { createPet, getAllCategory, getPetsByOwnerId } from "../data/pet";
+import { createPet } from "../data/pet";
 import { registerPetSchema } from "../schema/pet.schema";
-import { put } from "@vercel/blob";
-import { getSession } from "./auth";
 import { uploadPublicFile } from "@/utils/upload.utils";
 import { revalidatePath } from "next/cache";
-
-export async function getCategories() {
-  try {
-    return await getAllCategory();
-  } catch(error) {
-    throw error;
-  }
-}
+import { getSession } from "../data/auth";
 
 export async function registerPet(_currentState: any, formData: FormData) {
   try {
@@ -66,14 +57,5 @@ export async function registerPet(_currentState: any, formData: FormData) {
     return {
       error: "Internal server error"
     }
-  }
-}
-
-export async function getPets(ownerId: string) {
-  try {
-    const pets = await getPetsByOwnerId(ownerId);
-    return pets;
-  } catch (error) {
-    throw error;
   }
 }

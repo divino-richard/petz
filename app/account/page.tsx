@@ -1,18 +1,18 @@
 import EditProfileModal from "@/components/EditProfileModal";
-import Avatar from "../ui/Avatar";
+import Avatar from "../../components/Avatar";
 import LogoutButton from "../../components/LogoutButton";
-import Separator from "../ui/Separator";
-import { getUserProfile } from "../lib/actions/user";
+import Separator from "../../components/Separator";
 import RegisterPetModal from "@/components/RegisterPetModal";
-import { getPets, getCategories } from "../lib/actions/pet";
 import Link from "next/link";
+import { getCategories, getPetsByOwnerId } from "@/lib/data/pet";
+import { getUserProfile } from "@/lib/data/users";
 
 export default async function Page() {
   const user = await getUserProfile();
   if(!user) return;
 
-  const categories = await getCategories();
-  const pets = await getPets(user?.id);
+  const categories = await getCategories  ();
+  const pets = await getPetsByOwnerId(user?.id);
   
   return (
     <main>

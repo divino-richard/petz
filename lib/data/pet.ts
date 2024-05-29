@@ -1,11 +1,14 @@
 "use server";
 
 import prisma from "@/prisma/db";
-import { Pet } from "@prisma/client";
 
-export async function getAllCategory() {
-  return await prisma.petCategory.findMany();
-} 
+export async function getCategories() {
+  try {
+    return await prisma.petCategory.findMany();
+  } catch(error) {
+    throw error;
+  }
+}
 
 interface ICreatePet {
   ownerId: string,
@@ -26,18 +29,22 @@ export async function createPet(data: ICreatePet) {
 }
 
 export async function getPetsByOwnerId(id: string) {
-  return await prisma.pet.findMany({
-    where: {
-      ownerId: id
-    },
-    include: {
-      category: true,
-      _count: true
-    },
-    orderBy: {
-      createdAt: "desc"
-    }
-  })
+  try {
+    return await prisma.pet.findMany({
+      where: {
+        ownerId: id
+      },
+      include: {
+        category: true,
+        _count: true
+      },
+      orderBy: {
+        createdAt: "desc"
+      }
+    })
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function getPetById(id: string) {

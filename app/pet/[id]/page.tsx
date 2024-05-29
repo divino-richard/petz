@@ -1,6 +1,6 @@
-import { getPetById } from "@/app/lib/data/pet";
-import Avatar from "@/app/ui/Avatar";
-import Separator from "@/app/ui/Separator";
+import Avatar from "@/components/Avatar";
+import Separator from "@/components/Separator";
+import { getPetById } from "@/lib/data/pet";
 import { BiSolidEditAlt } from "react-icons/bi";
 
 interface Params {

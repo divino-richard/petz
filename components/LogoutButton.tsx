@@ -1,4 +1,4 @@
-import { logOut } from "../app/lib/actions/auth";
+import { logOut } from "@/lib/actions/auth";
 import { CgLogOut } from "react-icons/cg";  
 
 interface Props {

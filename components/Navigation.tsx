@@ -1,5 +1,5 @@
-import { getUserProfile } from "@/app/lib/actions/user";
-import Avatar from "@/app/ui/Avatar";
+import Avatar from "@/components/Avatar";
+import { getUserProfile } from "@/lib/data/users";
 import Link from "next/link"; 
 
 export default async function Navigation() {

@@ -1,13 +1,13 @@
 'use client';
 
 import EditProfileButton from "@/components/EditProfileButton";
-import Modal from "@/app/ui/Modal";
+import Modal from "@/components/Modal";
 import { useEffect, useState } from "react"
 import { User } from "@prisma/client";
 import UploadImage from "./UploadImage";
-import Separator from "@/app/ui/Separator";
+import Separator from "@/components/Separator";
 import { useFormState, useFormStatus} from "react-dom";
-import { updateProfile } from "@/app/lib/actions/user";
+import { updateProfile } from "@/lib/actions/user";
 
 interface Props {
   user: User;

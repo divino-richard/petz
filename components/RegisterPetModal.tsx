@@ -1,12 +1,12 @@
 'use client';
 
-import Modal from "@/app/ui/Modal";
+import Modal from "@/components/Modal";
 import { useEffect, useState } from "react";
 import UploadImage from "./UploadImage";
-import Separator from "@/app/ui/Separator";
+import Separator from "@/components/Separator";
 import { PetCategory } from "@prisma/client";
 import { useFormState, useFormStatus } from "react-dom";
-import { registerPet } from "@/app/lib/actions/pet";
+import { registerPet } from "@/lib/actions/pet";
 
 interface Props {
   categories: PetCategory[]

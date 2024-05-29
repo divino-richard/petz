@@ -1,10 +1,10 @@
 "use server";
 
-import { getUserById, updateUser } from "../data/users";
-import { getSession } from "./auth";
+import { updateUser } from "../data/users";
 import { revalidatePath } from "next/cache";
 import { updateProfileSchema } from "../schema/user.schema";
 import { uploadPublicFile } from "@/utils/upload.utils";
+import { getSession } from "../data/auth";
 
 export async function updateProfile(_currentState: any, formData: FormData) {
   try {
@@ -39,10 +39,4 @@ export async function updateProfile(_currentState: any, formData: FormData) {
   } catch (error) {
     throw error;
   }
-}
-
-export async function getUserProfile() {
-  const session = await getSession();
-  if(!session) return null;
-  return await getUserById(session?.id);
 }
