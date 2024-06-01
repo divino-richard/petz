@@ -4,11 +4,14 @@ import { updateUser } from "../data/users";
 import { revalidatePath } from "next/cache";
 import { updateProfileSchema } from "../schema/user.schema";
 import { uploadPublicFile } from "@/utils/upload.utils";
-import { getSession } from "../data/auth";
+import { auth } from "@/auth";
 
 export async function updateProfile(_currentState: any, formData: FormData) {
   try {
-    const user = await getSession();
+    const session = await auth();
+    if(!session) return null;
+    const { user } = session;
+
     const data = updateProfileSchema.parse({
       firstName: formData.get('firstName') as string,
       lastName: formData.get('lastName') as string,

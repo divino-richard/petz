@@ -22,8 +22,6 @@ export async function registerPet(_currentState: any, formData: FormData) {
     });
     let avatarUrl;
 
-    if(!petOwner) return;
-
     const avatar = formData.get('avatar') as File | null;
     const uploadResult = await uploadPublicFile(avatar);
     if(uploadResult) {
@@ -31,7 +29,7 @@ export async function registerPet(_currentState: any, formData: FormData) {
     }
 
     const pet = await createPet({ 
-      ownerId: petOwner.id,
+      ownerId: petOwner?.id ?? '',
       ...data, 
       adoptationDate: new Date(data.adoptationDate),
       avatar: avatarUrl

@@ -1,16 +1,25 @@
 import { User } from "@prisma/client";
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { SignJWT, jwtVerify } from 'jose';
 
-export function encrypt(payload: User, expiresIn: number) {
-  if(!process.env.SECRET_KEY) {
+function getSecretKey() {
+  const secretKey = process.env.SECRET_KEY;
+  if(!secretKey) {
     throw new Error('Failed to get secret key');
   }
-  return jwt.sign(payload, process.env.SECRET_KEY, { algorithm: 'HS256', expiresIn });
+  return new TextEncoder().encode(secretKey);
 }
 
-export function decrypt(session: string) {
-  if(!process.env.SECRET_KEY) {
-    throw new Error('Failed to get secret key')
-  }
-  return jwt.verify(session, process.env.SECRET_KEY) as JwtPayload;
+export async function encrypt(payload: User, expiresIn: number) {
+  const key = getSecretKey();
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256'})
+    .setIssuedAt()
+    .setExpirationTime('1 min from now')
+    .sign(key);
+}
+
+export async function decrypt(token: string) {
+  const key = getSecretKey();
+  const { payload } = await jwtVerify(token, key, { algorithms: ['HS256']});
+  return payload;
 }

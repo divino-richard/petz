@@ -1,11 +1,11 @@
 'use client';
 
 import LoginButton from "@/components/LoginButton";
-import { signIn } from "@/lib/actions/auth";
+import { authenticate } from "@/lib/actions/auth";
 import { useFormState } from "react-dom";
 
 export default function Page() {
-  const [errorMessage, dispatch] = useFormState(signIn, undefined);
+  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
   return (
     <div className="h-screen w-full flex items-center justify-center">

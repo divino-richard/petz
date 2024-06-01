@@ -1,37 +1,23 @@
 'use server';
 
-import { cookies } from "next/headers";
-import { getUserByEmail } from "../data/users";
-import argon2 from 'argon2';
-import { encrypt } from "@/utils/auth.utils";
-
-export async function signIn(_currentState: unknown, formData: FormData) {
-    try {
-        const { email, password } = {
-            email: formData.get('email'),
-            password: formData.get('password')
-        }
-
-        const user = await getUserByEmail(String(email));
-        if(!user || !await argon2.verify(user.password, String(password))) {
-            return 'Invalid email or password';
-        }
-
-        delete (user as any).password;
-
-        const expires = 60 * 60 * 24 * 7;
-        const session = encrypt(user, expires);
-        cookies().set('session', session, { maxAge: expires, httpOnly: true });
-
-    } catch (error) {
-        throw error
+import { signIn, signOut } from "@/auth"
+import {AuthError} from "next-auth";
+ 
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
     }
+  }
 }
 
-export async function logOut() {
-    try {
-        cookies().delete('session');
-    } catch (error) {
-        throw error;
-    }
-}

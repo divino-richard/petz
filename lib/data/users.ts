@@ -1,13 +1,6 @@
 'use server';
 
 import prisma from "@/prisma/db";
-import { getSession } from "./auth";
-
-export async function getUserProfile() {
-  const session = await getSession();
-  if(!session) return null;
-  return await getUserById(session?.id);
-}
 
 export async function getUserByEmail(email: string) {
   return await prisma.user.findUnique({
