@@ -7,6 +7,7 @@ import Link from "next/link";
 import { getCategories, getPetsByOwnerId } from "@/lib/data/pet";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { getUserById } from "@/lib/data/users";
 
 export default async function Page() {
   const session = await auth();
@@ -14,16 +15,15 @@ export default async function Page() {
   const { user } = session;
 
   const categories = await getCategories  ();
-  const pets = await getPetsByOwnerId(user?.id ?? '');
+  const pets = await getPetsByOwnerId(user.id);
   
   return (
     <main>
       <div className="w-2/3 m-auto mt-5">
-        { JSON.stringify(session)}
         <div className="flex justify-between py-5">
-          {/* <div className="flex flex-1 gap-5">
+          <div className="flex flex-1 gap-5">
             <Avatar 
-              imageUrl={user?. ?? ''}
+              imageUrl={user.avatar}
               fallback={user.firstName[0] + user.lastName[0]}
               variant="extra-large"
             />
@@ -36,7 +36,7 @@ export default async function Page() {
               {user.bio && <p className="text-[14px]">{user.bio}</p>}
               <EditProfileModal user={user}/>
             </div>  
-          </div> */}
+          </div>
           <LogoutButton className={'bg-zinc-600'}/>
         </div>
         <Separator />

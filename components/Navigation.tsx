@@ -20,11 +20,11 @@ export default async function Navigation() {
         <div>
           {user ?
             <Link href={'/account'}>
-              {/* <Avatar 
+              <Avatar
                 imageUrl={user.avatar}
                 fallback={user.firstName[0] + user.lastName[0]}
                 variant="small"
-              /> */}
+              />
             </Link>
             :
             <Link href={'/signin'}>

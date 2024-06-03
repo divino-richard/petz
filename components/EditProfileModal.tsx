@@ -22,7 +22,7 @@ export default function EditProfileModal({user}:Props) {
   const [state, dispatch] = useFormState(updateProfile, initialState);
 
   useEffect(() => {
-    if(state.success) {
+    if(state?.success) {
       setShowEditModal(false);
     }
   }, [state]);

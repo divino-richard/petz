@@ -1,6 +1,6 @@
 'use server';
 
-import { signIn, signOut } from "@/auth"
+import { signIn } from "@/auth"
 import {AuthError} from "next-auth";
  
 export async function authenticate(
@@ -18,6 +18,7 @@ export async function authenticate(
           return 'Something went wrong.';
       }
     }
+    throw error;
   }
 }
 

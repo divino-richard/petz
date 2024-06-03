@@ -10,20 +10,14 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isPublic = publicPaths.includes(nextUrl.pathname);
-
       if (!isPublic) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
+      } else if (isLoggedIn && nextUrl.pathname === '/signin') {
+        return Response.redirect(new URL('/', nextUrl));
       }
-
       return true;
     },
-    async redirect({url, baseUrl}) {
-      if (url === '/signin' && baseUrl) {
-        return baseUrl;
-      }
-      return url.startsWith(baseUrl) ? url : baseUrl;
-    }
   },
   providers: [], // Add providers with an empty array for now
 } satisfies NextAuthConfig;
