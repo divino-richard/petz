@@ -65,3 +65,23 @@ export async function getPetById(id: string) {
     throw error;
   }
 }
+
+interface IUpdatePet {
+  name: string;
+  age: number;
+  color: string;
+  breed: string;
+  weight: number;
+  adoptationDate: Date;
+  avatar?: string;
+  ability: string;
+  categoryId: string;
+}
+export async function updatePetById(petId: string, data: IUpdatePet) {
+  return await prisma.pet.update({
+    where: {
+      id: petId
+    },
+    data
+  })
+}

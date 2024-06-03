@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
+import EditPetModal from "@/components/EditPetModal";
 import Separator from "@/components/Separator";
-import { getPetById } from "@/lib/data/pet";
-import { BiSolidEditAlt } from "react-icons/bi";
+import { getCategories, getPetById } from "@/lib/data/pet";
 
 interface Params {
   params: {
@@ -11,7 +11,10 @@ interface Params {
 
 export default async function Page({ params }: Params) {
   const pet = await getPetById(params.id); 
+  const categories = await getCategories();
+
   if(!pet) return;
+
   return (
     <main>
       <div className="w-2/3 m-auto mt-5">
@@ -19,7 +22,7 @@ export default async function Page({ params }: Params) {
           <div className="flex flex-1 gap-5">
             <Avatar 
               imageUrl={pet.avatar ?? ''}
-              fallback={pet.name}
+              fallback={pet.name[0]}
               variant="extra-large"
             />
             <div className="flex-1">
@@ -57,12 +60,7 @@ export default async function Page({ params }: Params) {
                 </div>
               </div>
             </div> 
-            <button 
-              className="w-fit h-fit flex items-center gap-2 text-[16px] bg-zinc-50 py-2 px-5 border border-zinc-100 hover:border-zinc-800"
-            >
-              <BiSolidEditAlt className="text-[20px]"/>
-              <span>Edit profile</span>
-            </button>
+            <EditPetModal pet={pet} categories={categories}/>
           </div>
         </div>
         <Separator />

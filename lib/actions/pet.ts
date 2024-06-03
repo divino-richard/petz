@@ -1,7 +1,7 @@
 "use server";
 
 import { ZodError } from "zod";
-import { createPet } from "../data/pet";
+import { createPet, updatePetById } from "../data/pet";
 import { registerPetSchema } from "../schema/pet.schema";
 import { uploadPublicFile } from "@/utils/upload.utils";
 import { revalidatePath } from "next/cache";
@@ -52,8 +52,56 @@ export async function registerPet(_currentState: any, formData: FormData) {
         error: firstError.path + " is " + firstError.message.toLocaleLowerCase()
       }
     }
-    return {
-      error: "Internal server error"
+    throw error;
+  }
+}
+
+
+export async function updatePetProfile(_currentState: any, formData: FormData) {
+  try {
+    let avatarUrl;
+    const avatar = formData.get('avatar') as File | null;
+    const uploadResult = await uploadPublicFile(avatar);
+
+    const data = registerPetSchema.parse({
+      id: formData.get('id'),
+      name: formData.get('name'),
+      age: Number(formData.get('age')),
+      color: formData.get('color'),
+      breed: formData.get('breed'),
+      weight: Number(formData.get('weight')),
+      adoptationDate: formData.get('adoptationDate'),
+      ability: formData.get('ability'),
+      categoryId: formData.get('category')
+    });
+
+    if(uploadResult) {
+      avatarUrl = uploadResult.url;
     }
+
+    const update = await updatePetById(data.id, {
+      ...data,
+      adoptationDate: new Date(data.adoptationDate),
+      avatar: avatarUrl
+    });
+
+    if(!update) return {
+      error: 'Failed to update pet'
+    }
+
+    revalidatePath('/pet/[id]');
+
+    return {
+      success: true
+    }
+
+  } catch (error) {
+    if(error instanceof ZodError) {
+      const firstError = error.errors[0];
+      return {
+        error: firstError.path + " is " + firstError.message.toLocaleLowerCase()
+      }
+    }
+    throw error;
   }
 }
