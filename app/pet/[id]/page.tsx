@@ -1,7 +1,7 @@
-import Avatar from "@/components/Avatar";
-import CreatePetPostModal from "@/components/CreatePetPostModal";
-import EditPetModal from "@/components/EditPetModal";
-import Separator from "@/components/Separator";
+import Avatar from "@/components/ui/Avatar";
+import CreatePetPostModal from "@/components/petpost/CreatePetPostModal";
+import EditPetModal from "@/components/pet/EditPetModal";
+import Separator from "@/components/ui/Separator";
 import { getCategories, getPetById } from "@/lib/data/pet";
 
 interface Params {
@@ -70,6 +70,9 @@ export default async function Page({ params }: Params) {
           <div className="flex items-center justify-between">
             <h1 className="text-[16px] text-zinc-800 font-semibold">Posts</h1>
             <CreatePetPostModal petId={pet.id}/>
+          </div>
+          <div>
+            
           </div>
         </div>
       </div>

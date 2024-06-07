@@ -1,8 +1,8 @@
-import EditProfileModal from "@/components/EditProfileModal";
-import Avatar from "../../components/Avatar";
-import LogoutButton from "../../components/LogoutButton";
-import Separator from "../../components/Separator";
-import RegisterPetModal from "@/components/RegisterPetModal";
+import EditProfileModal from "@/components/user/EditProfileModal";
+import Avatar from "../../components/ui/Avatar";
+import LogoutButton from "../../components/user/LogoutButton";
+import Separator from "../../components/ui/Separator";
+import RegisterPetModal from "@/components/pet/RegisterPetModal";
 import Link from "next/link";
 import { getCategories, getPetsByOwnerId } from "@/lib/data/pet";
 import { redirect } from "next/navigation";

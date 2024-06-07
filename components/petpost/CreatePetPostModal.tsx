@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import Modal from "./Modal";
-import UploadImages from "./UploadImages";
+import Modal from "../ui/Modal";
+import UploadImages from "../ui/UploadImages";
 import { useFormState, useFormStatus } from "react-dom";
-import Separator from "./Separator";
+import Separator from "../ui/Separator";
 import { createPetPost } from "@/lib/actions/petpost";
 
 interface Props {

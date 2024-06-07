@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import Avatar from "@/components/Avatar";
+import Avatar from "@/components/ui/Avatar";
 import Link from "next/link"; 
 
 export default async function Navigation() {

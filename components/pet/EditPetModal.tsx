@@ -1,28 +1,32 @@
 'use client';
 
-import Modal from "@/components/Modal";
+import { BiSolidEditAlt } from "react-icons/bi";
+import Modal from "../ui/Modal";
 import { useEffect, useState } from "react";
-import UploadImage from "./UploadImage";
-import Separator from "@/components/Separator";
-import { PetCategory } from "@prisma/client";
+import { Pet, PetCategory, User } from "@prisma/client";
+import UploadImage from "../ui/UploadImage";
+import Separator from "../ui/Separator";
 import { useFormState, useFormStatus } from "react-dom";
-import { registerPet } from "@/lib/actions/pet";
+import { updatePetProfile } from "@/lib/actions/pet";
 
 interface Props {
-  categories: PetCategory[]
+  pet: Pet;
+  categories: PetCategory[];
 }
 
 interface InitialState {
   error?: string,
   success?: boolean
 }
+
 const initialState: InitialState = {
   error: '',
   success: false
 }
-export default function RegisterPetModal({categories}:Props) {
+
+export default function EditPetModal({ pet, categories }:Props) {
   const [showModal, setShowModal] = useState(false);
-  const [state, dispatch] = useFormState(registerPet, initialState);
+  const [state, dispatch] = useFormState(updatePetProfile, initialState);
 
   useEffect(() => {
     if(state?.success) {
@@ -33,24 +37,36 @@ export default function RegisterPetModal({categories}:Props) {
   return (
     <div>
       <button 
-        className="bg-zinc-800 text-white text-[16px] py-2 px-5 hover:bg-zinc-700"
+        className="w-fit h-fit flex items-center gap-2 text-[16px] bg-zinc-50 py-2 px-5 border border-zinc-100 hover:border-zinc-800"
         onClick={() => setShowModal(true)}
       >
-        Register Pet
+        <BiSolidEditAlt className="text-[20px]"/>
+        <span>Edit profile</span>
       </button>
-      <Modal
+
+      <Modal 
+        title="Edit pet profile"
         show={showModal}
         onClose={() => setShowModal(false)}
-        title="Pet Registration"
       >
-        {state?.error && 
-          <p className="text-red-500 text-[14px] text-center">{state.error}</p>
+        {state?.error &&
+          <p className="text-red-500 text-[14px] text-center">
+            {state?.error}
+          </p>
         }
         <form action={dispatch} className="space-y-5">
           <div className="py-5">
             <UploadImage />
           </div>
           <Separator />
+
+          <input 
+            type="hidden" 
+            className="border border-zinc-200 p-3 rounded-lg text-[14px]"
+            name="id"
+            value={pet.id}
+          />
+          
           <div className="flex flex-col">
             <label 
               htmlFor="name"
@@ -63,6 +79,7 @@ export default function RegisterPetModal({categories}:Props) {
               id="name"
               className="border border-zinc-200 p-3 rounded-lg text-[14px]"
               name="name"
+              defaultValue={pet.name}
             />
           </div>
           <div className="flex flex-col">
@@ -78,6 +95,7 @@ export default function RegisterPetModal({categories}:Props) {
               className="border border-zinc-200 p-3 rounded-lg text-[14px]"
               name="age"
               min={0}
+              defaultValue={pet.age}
             />
           </div>
           <div className="flex flex-col">
@@ -92,6 +110,7 @@ export default function RegisterPetModal({categories}:Props) {
               id="color"
               className="border border-zinc-200 p-3 rounded-lg text-[14px]"
               name="color"
+              defaultValue={pet.color}
             />
           </div>
           <div className="flex flex-col">
@@ -106,6 +125,7 @@ export default function RegisterPetModal({categories}:Props) {
               id="breed"
               className="border border-zinc-200 p-3 rounded-lg text-[14px]"
               name="breed"
+              defaultValue={pet.breed}
             />
           </div>
           <div className="flex flex-col">
@@ -121,6 +141,7 @@ export default function RegisterPetModal({categories}:Props) {
               className="border border-zinc-200 p-3 rounded-lg text-[14px]"
               name="weight"
               min={1}
+              defaultValue={pet.weight}
             />
           </div>
           <div className="flex flex-col">
@@ -135,6 +156,7 @@ export default function RegisterPetModal({categories}:Props) {
               id="adoptationDate"
               className="border border-zinc-200 p-3 rounded-lg text-[14px]"
               name="adoptationDate"
+              defaultValue={pet.adoptationDate.toISOString().split('T')[0]}
             />
           </div>
           <div className="flex flex-col">
@@ -149,6 +171,7 @@ export default function RegisterPetModal({categories}:Props) {
               id="ability"
               className="border border-zinc-200 p-3 rounded-lg text-[14px]"
               name="ability"
+              defaultValue={pet.ability}
             />
           </div>
           <div className="flex flex-col">
@@ -161,6 +184,7 @@ export default function RegisterPetModal({categories}:Props) {
             <select 
               name="category" 
               className="border border-zinc-200 p-3 rounded-lg text-[14px]"
+              defaultValue={pet.categoryId}
             >
               <option disabled >Select category</option>
               {categories.map(category => (
@@ -179,7 +203,7 @@ export default function RegisterPetModal({categories}:Props) {
             >
               Cancel
             </button>
-            <RegisterButton />
+            <SaveButton />
           </div>
         </form>
       </Modal>
@@ -187,14 +211,14 @@ export default function RegisterPetModal({categories}:Props) {
   )
 }
 
-function RegisterButton() {
-  const {pending} = useFormStatus();
+function SaveButton() {
+  const { pending } = useFormStatus();
   return (
     <button 
       type="submit"
       className="w-fit flex items-center gap-2 text-[16px]  bg-zinc-800 text-white py-2 px-5 border border-zinc-800 mt-5 hover:bg-zinc-700"
     >
-      {pending ? "Loading..." : "Register"}
+      {pending ? "Loading..." : "Save"}
     </button>
-  );
+  )
 }
