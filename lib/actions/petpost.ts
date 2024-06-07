@@ -3,8 +3,9 @@
 import { uploadPublicFile } from "@/utils/upload.utils";
 import { createPetPostSchema } from "../schema/petpost.schema";
 import { ZodError } from "zod";
-import { addPost } from "../data/petpost";
-import { addPostImage } from "../data/postimages";
+import deletePetPostById, { addPost } from "../data/petpost";
+import { addPostImage, deletePostImagesByPostId } from "../data/postimages";
+import { revalidatePath } from "next/cache";
 
 export async function createPetPost(_currentState: any, formData: FormData) {
   try {
@@ -35,6 +36,8 @@ export async function createPetPost(_currentState: any, formData: FormData) {
     });
     await Promise.all(postImagePromises);
 
+    revalidatePath('/pet/[id]');
+
     return {
       success: true,
     }
@@ -45,6 +48,23 @@ export async function createPetPost(_currentState: any, formData: FormData) {
         error: firstError.path + ' is ' + firstError.message.toLocaleLowerCase(),
       }
     }
+    throw error;
+  }
+}
+
+export async function deletePetPost(_currentState: any, formData: FormData) {
+  try {
+    const postId = formData.get('postId') as string;
+    if(!postId) return {
+      error: "Post id is required"
+    }
+    await deletePostImagesByPostId(postId);
+    await deletePetPostById(postId);
+    revalidatePath('/pet/[id]')
+    return {
+      success: true
+    }
+  } catch (error) {
     throw error;
   }
 }

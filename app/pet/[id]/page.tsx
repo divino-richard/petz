@@ -3,6 +3,8 @@ import CreatePetPostModal from "@/components/petpost/CreatePetPostModal";
 import EditPetModal from "@/components/pet/EditPetModal";
 import Separator from "@/components/ui/Separator";
 import { getCategories, getPetById } from "@/lib/data/pet";
+import { getPetPostsById } from "@/lib/data/petpost";
+import PetPostCard from "@/components/petpost/PetPostCard";
 
 interface Params {
   params: {
@@ -13,6 +15,7 @@ interface Params {
 export default async function Page({ params }: Params) {
   const pet = await getPetById(params.id); 
   const categories = await getCategories();
+  const petPosts = await getPetPostsById(params.id);
 
   if(!pet) return;
 
@@ -65,14 +68,15 @@ export default async function Page({ params }: Params) {
           </div>
         </div>
         <Separator />
-
         <div>
           <div className="flex items-center justify-between">
             <h1 className="text-[16px] text-zinc-800 font-semibold">Posts</h1>
             <CreatePetPostModal petId={pet.id}/>
           </div>
-          <div>
-            
+          <div className="py-5 space-y-5">
+            {petPosts.map((post, index) => (
+              <PetPostCard key={index} petPost={post}/>
+            ))}
           </div>
         </div>
       </div>

@@ -11,3 +11,26 @@ export async function addPost(post: IAddPost) {
     data: post
   })
 }
+
+export async function getPetPostsById(petId: string) {
+  return await prisma.petPost.findMany({
+    where: {
+      petId
+    },
+    include: {
+      images: true,
+      pet: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
+}
+
+export default async function deletePetPostById(id: string) {
+  return await prisma.petPost.delete({
+    where: {
+      id
+    }
+  })
+}

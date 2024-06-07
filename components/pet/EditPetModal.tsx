@@ -44,7 +44,7 @@ export default function EditPetModal({ pet, categories }:Props) {
         <span>Edit profile</span>
       </button>
 
-      <Modal 
+      <Modal
         title="Edit pet profile"
         show={showModal}
         onClose={() => setShowModal(false)}

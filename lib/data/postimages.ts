@@ -11,3 +11,11 @@ export async function addPostImage(data: IAddPostImage) {
     data
   })
 }
+
+export async function deletePostImagesByPostId(postId: string) {
+  return await prisma.postImage.deleteMany({
+    where: {
+      postId
+    }
+  })
+}

@@ -74,7 +74,7 @@ model PetPost {
   pet        Pet         @relation(fields: [petId], references: [id])
   petId      String
   images     PostImage[]
-  createdAte DateTime    @default(now())
+  createdAt DateTime    @default(now())
   updateAt   DateTime    @updatedAt
 }
 
@@ -83,6 +83,6 @@ model PostImage {
   imageUrl   String
   post       PetPost  @relation(fields: [postId], references: [id])
   postId     String
-  createdAte DateTime @default(now())
+  createdAt DateTime @default(now())
   updateAt   DateTime @updatedAt
 }
