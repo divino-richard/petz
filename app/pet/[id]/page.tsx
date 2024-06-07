@@ -5,6 +5,9 @@ import Separator from "@/components/ui/Separator";
 import { getCategories, getPetById } from "@/lib/data/pet";
 import { getPetPostsById } from "@/lib/data/petpost";
 import PetPostCard from "@/components/petpost/PetPostCard";
+import { IoMdArrowBack } from "react-icons/io";
+import { redirect } from "next/navigation";
+import BackButton from "@/components/ui/BackButton";
 
 interface Params {
   params: {
@@ -22,6 +25,7 @@ export default async function Page({ params }: Params) {
   return (
     <main>
       <div className="w-2/3 m-auto mt-5">
+        <BackButton />
         <div className="flex justify-between py-5">
           <div className="flex flex-1 gap-5">
             <Avatar 

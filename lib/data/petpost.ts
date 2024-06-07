@@ -27,10 +27,22 @@ export async function getPetPostsById(petId: string) {
   })
 }
 
-export default async function deletePetPostById(id: string) {
+export async function deletePetPostById(id: string) {
   return await prisma.petPost.delete({
     where: {
       id
     }
+  })
+}
+
+interface IUpdatePost {
+  caption: string;
+}
+export async function updatePetPostById(id: string, data: IUpdatePost) {
+  return await prisma.petPost.update({
+    where: {
+      id
+    },
+    data
   })
 }

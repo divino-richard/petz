@@ -1,9 +1,9 @@
 'use server';
 
 import { uploadPublicFile } from "@/utils/upload.utils";
-import { createPetPostSchema } from "../schema/petpost.schema";
+import { createPetPostSchema, updatePetPostSchema } from "../schema/petpost.schema";
 import { ZodError } from "zod";
-import deletePetPostById, { addPost } from "../data/petpost";
+import { addPost, deletePetPostById, updatePetPostById } from "../data/petpost";
 import { addPostImage, deletePostImagesByPostId } from "../data/postimages";
 import { revalidatePath } from "next/cache";
 
@@ -51,6 +51,53 @@ export async function createPetPost(_currentState: any, formData: FormData) {
     throw error;
   }
 }
+
+export async function updatePetPost(_currentState: any, formData: FormData) {
+  try {
+    const images = Array.from(formData.getAll('petImages') as File[]);
+    const { postId, caption } = updatePetPostSchema.parse({
+      postId: formData.get('postId'),
+      caption: formData.get('caption')
+    });
+
+    if(images[0].size <= 0) {
+      return {
+        error: 'No images selected'
+      }
+    }
+
+    await updatePetPostById(postId, { caption });
+
+    const uploadPromises = images.map(async (file) => {
+      return await uploadPublicFile(file);
+    });
+    const uploadResults = await Promise.all(uploadPromises);
+
+    await deletePostImagesByPostId(postId)
+
+    const updateImagePromises = uploadResults.map(async (result) => {
+      return await addPostImage({
+        postId: postId,
+        imageUrl: result?.url ?? '',
+      })
+    });
+    await Promise.all(updateImagePromises);
+
+    revalidatePath('/pet/[id]');
+
+    return {
+      success: true
+    }
+  } catch (error) {
+    if(error instanceof ZodError) {
+      const firstError = error.errors[0];
+      return {
+        error: firstError.path + ' is ' + firstError.message.toLocaleLowerCase()
+      }
+    }
+    throw error;
+  }
+} 
 
 export async function deletePetPost(_currentState: any, formData: FormData) {
   try {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 interface Props {
-  onClick: () => void;
+  onClick?: () => void;
   title: string;
   type: 'fill' | 'no-fill' | 'text';
   htmlType: 'button' | 'reset' | 'submit';
@@ -15,7 +15,6 @@ export default function Button(props: Props) {
     switch(type) {
       case 'no-fill':
         return 'hover:bg-zinc-800 hover:text-white';
-        return;
       case 'fill':
         return 'bg-zinc-800 text-white hover:bg-white hover:text-zinc-800';
     }

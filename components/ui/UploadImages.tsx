@@ -1,18 +1,26 @@
 import Image from "next/image";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { IoClose } from "react-icons/io5";
 
 interface Props {
   name: string;
+  defaultImages?: File[]
 }
 
 const IMAGES_ALLOWED = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
 
-export default function UploadImages({name}:  Props) {
+export default function UploadImages(props:  Props) {
+  const  {name, defaultImages} = props;
   const selectImages = useRef<HTMLInputElement>(null);
   const [imageItemHovered, setImageItemHovered] = useState<number | null>(null);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [dragActive, setDragActive] = useState(false);
+
+  useEffect(() => {
+    if(defaultImages) {
+      setDefaultImages(defaultImages);
+    }
+  }, [defaultImages]);
 
   const handleSelectFiles = () => {
     if (selectImages.current) {
@@ -88,6 +96,23 @@ export default function UploadImages({name}:  Props) {
       selectImages.current.dispatchEvent(event);
     }
   };
+
+  const setDefaultImages = (images: File[]) => {
+    if (images && images.length <= 0) return;
+  
+    const dataTransfer = new DataTransfer();
+    images.map(image => {
+      if(IMAGES_ALLOWED.includes(image.type)) {
+        dataTransfer.items.add(image);
+      }
+    })
+
+    if (selectImages.current) {
+      selectImages.current.files = dataTransfer.files;
+      const event = new Event('change', { bubbles: true });
+      selectImages.current.dispatchEvent(event);
+    }
+  }
 
   return (
     <div>

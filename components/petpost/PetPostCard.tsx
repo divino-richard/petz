@@ -26,7 +26,7 @@ export default function PetPostCard(params: Params) {
         </div>
         <div className="flex items-center gap-2">
           <p className="text-[14px]">{petPost.createdAt.toDateString()}</p>
-          <PostActionDropdown postId={petPost.id}/>
+          <PostActionDropdown petPost={petPost}/>
         </div>
       </div>
       <Separator />

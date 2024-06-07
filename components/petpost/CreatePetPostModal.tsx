@@ -72,9 +72,7 @@ export default function CreatePetPostModal({petId}:Props) {
             />
           </div>
           <UploadImages name="petImages" />
-          
           <Separator />
-
           <div className="flex justify-end gap-5">
             <button 
               type="button"
