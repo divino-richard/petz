@@ -5,11 +5,11 @@ import { createPet, updatePetById } from "../data/pet";
 import { registerPetSchema } from "../schema/pet.schema";
 import { uploadPublicFile } from "@/utils/upload.utils";
 import { revalidatePath } from "next/cache";
-import { getSession } from "../data/auth";
-
+import { createPetPostSchema } from "../schema/petpost.schema";
+import { auth } from "@/auth";
 export async function registerPet(_currentState: any, formData: FormData) {
   try {
-    const petOwner = await getSession();
+    const petOwner = await auth();
     const data = registerPetSchema.parse({
       name: formData.get('name'),
       age: Number(formData.get('age')),
@@ -29,7 +29,7 @@ export async function registerPet(_currentState: any, formData: FormData) {
     }
 
     const pet = await createPet({ 
-      ownerId: petOwner?.id ?? '',
+      ownerId: petOwner?.user.id ?? '',
       ...data, 
       adoptationDate: new Date(data.adoptationDate),
       avatar: avatarUrl

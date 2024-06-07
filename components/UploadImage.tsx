@@ -7,14 +7,13 @@ import userPlaceholder from '@/public/image-placeholder.png';
 export default function UploadImage() {
   const selectImage = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState('');
+  const [dragActive, setDragActive] = useState(false);
 
   const handleSelectFile = () => {
     if (selectImage.current) {
       selectImage.current.click();
     }
   }
-
-  const [dragActive, setDragActive] = useState(false);
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();

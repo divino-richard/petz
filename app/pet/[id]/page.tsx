@@ -1,4 +1,5 @@
 import Avatar from "@/components/Avatar";
+import CreatePetPostModal from "@/components/CreatePetPostModal";
 import EditPetModal from "@/components/EditPetModal";
 import Separator from "@/components/Separator";
 import { getCategories, getPetById } from "@/lib/data/pet";
@@ -68,11 +69,7 @@ export default async function Page({ params }: Params) {
         <div>
           <div className="flex items-center justify-between">
             <h1 className="text-[16px] text-zinc-800 font-semibold">Posts</h1>
-            <button 
-              className="bg-zinc-800 text-white text-[16px] py-2 px-5 hover:bg-zinc-700"
-            >
-              Create Post
-            </button>
+            <CreatePetPostModal petId={pet.id}/>
           </div>
         </div>
       </div>
