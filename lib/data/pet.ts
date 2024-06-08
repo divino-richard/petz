@@ -85,3 +85,11 @@ export async function updatePetById(petId: string, data: IUpdatePet) {
     data
   })
 }
+
+export async function getPetOwnerById(ownerId: string) {
+  return await prisma.user.findUnique({
+    where: {
+      id: ownerId
+    },
+  });
+}

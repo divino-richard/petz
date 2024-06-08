@@ -46,3 +46,15 @@ export async function updatePetPostById(id: string, data: IUpdatePost) {
     data
   })
 }
+
+export async function getAllPosts() {
+  return await prisma.petPost.findMany({
+    include: {
+      images: true,
+      pet: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
+}

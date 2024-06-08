@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import Avatar from "@/components/ui/Avatar";
 import Link from "next/link"; 
+import { BiSolidBell } from "react-icons/bi";
 
 export default async function Navigation() {
   const session = await auth();
@@ -8,7 +9,7 @@ export default async function Navigation() {
   const { user } = session;
 
   return (
-    <nav className="flex justify-between items-center py-2 px-5 bg-zinc-100">
+    <nav className="sticky top-0 flex justify-between items-center py-2 px-5 bg-zinc-100">
         <div>
           <Link 
             href={'/'}
@@ -17,7 +18,13 @@ export default async function Navigation() {
             Petz
           </Link>
         </div>
-        <div>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-5 px-5">
+            <BiSolidBell
+              className="text-zinc-800" 
+              size={20}
+            />
+          </div>
           {user ?
             <Link href={'/account'}>
               <Avatar

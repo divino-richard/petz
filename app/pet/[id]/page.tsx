@@ -5,8 +5,6 @@ import Separator from "@/components/ui/Separator";
 import { getCategories, getPetById } from "@/lib/data/pet";
 import { getPetPostsById } from "@/lib/data/petpost";
 import PetPostCard from "@/components/petpost/PetPostCard";
-import { IoMdArrowBack } from "react-icons/io";
-import { redirect } from "next/navigation";
 import BackButton from "@/components/ui/BackButton";
 
 interface Params {
@@ -67,7 +65,7 @@ export default async function Page({ params }: Params) {
                   <span>{new Date(pet.adoptationDate).toDateString()}</span>
                 </div>
               </div>
-            </div> 
+            </div>
             <EditPetModal pet={pet} categories={categories}/>
           </div>
         </div>
